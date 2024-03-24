@@ -1,5 +1,4 @@
-package entity;
-
+package br.com.carlosborges.entity;
 
 
 import jakarta.persistence.Entity;
@@ -22,7 +21,7 @@ public class Todo {
 	
 	public Todo() {		
 	}
-
+	
 	public Todo(Long id, String nome, String descricao, boolean realizado, int prioridade) {
 		super();
 		this.id = id;
@@ -30,6 +29,11 @@ public class Todo {
 		this.descricao = descricao;
 		this.realizado = realizado;
 		this.prioridade = prioridade;
+	}
+
+
+	public Todo(Todo todo) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
