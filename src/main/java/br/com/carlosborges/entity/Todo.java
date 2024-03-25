@@ -30,12 +30,7 @@ public class Todo {
 		this.realizado = realizado;
 		this.prioridade = prioridade;
 	}
-
-
-	public Todo(Todo todo) {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
