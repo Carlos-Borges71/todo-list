@@ -1,9 +1,11 @@
 package br.com.carlosborges.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.carlosborges.entity.Todo;
@@ -12,11 +14,11 @@ import br.com.carlosborges.repository.TodoRepository;
 @Service
 public class TodoService {
 	
+	
+	@Autowired
 	private TodoRepository todoRepository;
 	
-	public TodoService(TodoRepository todoRepository) {
-		this.todoRepository = todoRepository;
-	}
+	
 
 	public List<Todo> create(Todo obj){
 		todoRepository.save(obj);
@@ -24,14 +26,14 @@ public class TodoService {
 	}
 	
 	public List<Todo> findAll(){	
-		return todoRepository.findAll();
+		return todoRepository.findAll(Sort.by(Sort.Direction.ASC,"nome")
+				.and(Sort.by(Sort.Direction.ASC,"descricao")));
 	}
 	 
-	public Todo findById(Long id){		
+	public Todo findById(Long id ) {
 		Optional<Todo> obj = todoRepository.findById(id);
-		
-		return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado", obj));		
-	}
+		return obj.orElseThrow(() -> new NoSuchElementException("Objeto não encontrado!"));
+	}	
 	
 	public Todo update(Todo obj){
 		Todo newObj = (Todo) findById(obj.getId());
@@ -47,7 +49,7 @@ public class TodoService {
 	}
 
 	public List<Todo> delete(Long id){
-		todoRepository.deleteById(id);		
+		todoRepository.deleteById(id);;		
 		return findAll();	
 	}
 }
