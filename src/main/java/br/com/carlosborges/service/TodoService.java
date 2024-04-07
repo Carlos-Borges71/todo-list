@@ -1,7 +1,6 @@
 package br.com.carlosborges.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.carlosborges.entity.Todo;
 import br.com.carlosborges.repository.TodoRepository;
+import br.com.carlosborges.service.exception.ObjectNotFoundException;
 
 @Service
 public class TodoService {
@@ -20,7 +20,11 @@ public class TodoService {
 	
 	
 
-	public List<Todo> create(Todo obj){
+	public List<Todo> create(Todo obj){				
+		if(obj.getNome()==null) {
+			throw new ObjectNotFoundException(null);
+		}
+		
 		todoRepository.save(obj);
 		return findAll();
 	}
@@ -32,7 +36,7 @@ public class TodoService {
 	 
 	public Todo findById(Long id ) {
 		Optional<Todo> obj = todoRepository.findById(id);
-		return obj.orElseThrow(() -> new NoSuchElementException("Objeto não encontrado!"));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
 	}	
 	
 	public Todo update(Todo obj){

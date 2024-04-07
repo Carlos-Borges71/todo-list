@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.carlosborges.entity.Todo;
 import br.com.carlosborges.service.TodoService;
+import br.com.carlosborges.service.exception.ObjectNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/todos")
@@ -31,8 +33,15 @@ public class TodoController {
 		this.todoService = todoService;
 	}
 
+	public TodoController() {		
+	}
+
 	@PostMapping
-	public ResponseEntity<List<Todo>> create(@RequestBody Todo obj){		
+	public ResponseEntity<List<Todo>> create(@RequestBody @Valid Todo obj){	
+		
+		if (obj.getNome() == null) {
+			throw new ObjectNotFoundException("Nulo");
+		}
 		todoService.create(obj);		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
