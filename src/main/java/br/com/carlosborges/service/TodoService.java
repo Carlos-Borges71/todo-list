@@ -18,13 +18,7 @@ public class TodoService {
 	@Autowired
 	private TodoRepository todoRepository;
 	
-	
-
-	public List<Todo> create(Todo obj){				
-		if(obj.getNome()==null) {
-			throw new ObjectNotFoundException(null);
-		}
-		
+	public List<Todo> create(Todo obj){						
 		todoRepository.save(obj);
 		return findAll();
 	}
